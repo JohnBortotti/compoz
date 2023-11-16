@@ -7,14 +7,21 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-import { ChakraProvider, Grid, GridItem, Box, Tag, Flex, Heading, Avatar, Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import { ChakraProvider, Grid, GridItem, Box, Tag, Flex, Heading, Avatar, Menu, MenuButton, MenuList, MenuItem, Button, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import ContainerDetails from "~/components/containerDetails";
+import ContainerDetails from "~/components/container/containerDetails";
 import ContainersList from "~/components/container/containersList";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
-import StacksList from "~/components/stacksList";
+import StacksList from "~/components/stack/stacksList";
+import { useState } from "react";
+import { MaybeContainer, MaybeStack, ShowingType } from "~/types/containerTypes";
+import StackDetails from "~/components/stack/stackDetails";
 
 export default function Index() {
+  
+  const [showType, setShowType] = useState<ShowingType>("containers");
+  const [selectedContainer, setSelectedContainer] = useState<MaybeContainer>({container: null});
+  const [selectedStack, setSelectedStack] = useState<MaybeStack>({stack: null});
+
   return (
     <ChakraProvider>
       <Box p={2} bg="gray.100" h="full" w="full">
@@ -45,25 +52,25 @@ export default function Index() {
               borderRadius="md">
               <Tabs>
                 <TabList>
-                  <Tab>Containers</Tab>
-                  <Tab>Stacks</Tab>
+                  <Tab onClick={() => setShowType("containers")}>Containers</Tab>
+                  <Tab onClick={() => setShowType("stacks")}>Stacks</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <ContainersList />
+                    <ContainersList setSelectedContainer={setSelectedContainer}/>
                   </TabPanel>
                   <TabPanel>
-                    <StacksList />
+                    <StacksList setSelectedStack={setSelectedStack} />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </GridItem>
             <GridItem colStart={2} colEnd={6} p={3} h='full' bg='white' w='full' borderRadius="md">
-              <ContainerDetails
-                name="nginx"
-                status="running"
-                stack="nginx-reverse-proxy"
-              />
+              {showType === "containers" ? (
+                <ContainerDetails container={selectedContainer} />
+              ) : (
+                <StackDetails stack={selectedStack} />
+              )}
             </GridItem>
           </Grid>
         </Box>

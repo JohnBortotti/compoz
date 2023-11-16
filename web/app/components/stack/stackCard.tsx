@@ -1,7 +1,7 @@
 import { Text, Box, Tag, Flex } from "@chakra-ui/react";
-import { StackCardProps } from "../../types/containerTypes";
+import { StackCardProp } from "../../types/containerTypes";
 
-export default function StackCard({ name, count }: StackCardProps) {
+export default function StackCard({ name, count }: StackCardProp) {
     const text = count > 1 ? "containers" : "container";
 
     return (
