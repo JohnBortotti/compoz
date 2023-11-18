@@ -1,64 +1,44 @@
 import { List, ListItem, Button } from "@chakra-ui/react";
 import ContainerCard from "./containerCard";
 import ContainerSearchBar from "./containerSearchBar";
-import { useState } from "react";
-import { ContainerCardProp } from "~/types/containerTypes";
+import { useEffect, useState } from "react";
+import { ContainerCardType, setDetailsInterface } from "~/types/containerTypes";
+import { getContainers } from "~/utils/api";
 
-const containers: ContainerCardProp[] = [
-    {
-        id:"1", 
-        name: "nginx",
-        status: "running",
-        stack: "nginx-reverse-proxy",
-    },
-    {
-        id:"2", 
-        name: "grafana",
-        status: "running",
-        stack: "monitoring",
-    },
-    {
-        id:"3", 
-        name: "rabbitmq",
-        status: "running",
-        stack: "monitoring",
-    },
-    {
-        id:"4", 
-        name: "jenkins",
-        status: "stopped",
-        stack: "CI/CD",
-    },
-    {
-        id:"5", 
-        name: "bitwarden",
-        status: "stopped",
-        stack: "password-manager",
-    },
-    {
-        id:"6", 
-        name: "elasticsearch",
-        status: "running",
-        stack: "monitoring",
-    },
-];
+export default function ContainersList({ setDetails }: setDetailsInterface) {
+    // const [searchTerm, setSearchTerm] = useState("");
+    // const filteredContainers = containers.filter((container) =>
+        // container.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
+    const [ containers, setContainers ] = useState<ContainerCardType[]>([]);
 
-export default function ContainersList({setSelectedContainer} : any) {
-    const [searchTerm, setSearchTerm] = useState("");
+    useEffect(() => {
+        const fetchContainers = async () => {
+            const data = await getContainers();
+            console.log(data);
+            setContainers(data);
+        };
 
-    const filteredContainers = containers.filter((container) =>
-        container.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+        fetchContainers();
+    }, []);
 
     return (
         <List spacing={2}>
-            <ContainerSearchBar onSearch={(term: any) => setSearchTerm(term)} />
-            {filteredContainers.map((container) => (
+            {/* <ContainerSearchBar
+                onSearch={(term: any) => setSearchTerm(term)} 
+            /> */}
+            {containers.map((container) => (
                 <ListItem key={container.id}>
-                    <Button w="full" variant="ghost" justifyContent="flex-start" onClick={() => setSelectedContainer(container)}>
+                    <Button 
+                        w="full" 
+                        variant="ghost" 
+                        justifyContent="flex-start" 
+                        onClick={
+                            () => setDetails({ type: "container", item: container })
+                        }>
                         <ContainerCard
                             name={container.name}
-                            status={container.status}
+                            state={container.state}
                             stack={container.stack}
                         />
                     </Button>

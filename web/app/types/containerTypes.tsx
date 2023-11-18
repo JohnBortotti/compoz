@@ -1,24 +1,33 @@
-export type containerStatus = "running" | "stopped";
+export type containerState = "running" | "stopped";
 
-export type ContainerCardProp = {
+export type ContainerCardType = {
     id: string;
     name: string;
-    status: containerStatus;
+    state: containerState;
     stack: String
 }
 
-export type StackCardProp = {
+export type StackCardType = {
     id: string;
     name: string;
     count: number;
 }
 
-export type ShowingType = "containers" | "stacks";
+export type ShowingDetailsType = "containers" | "stacks";
 
 export type MaybeContainer = {
-    container: ContainerCardProp | null;
+    container: ContainerCardType | null;
 };
 
 export type MaybeStack = {
-    stack: StackCardProp | null;
+    stack: StackCardType | null;
 };
+
+export type ContainerOrStack = {
+    type: "container" | "stack";
+    item: ContainerCardType | StackCardType;
+};
+
+export interface setDetailsInterface {
+    setDetails: (item: ContainerOrStack) => void;
+}

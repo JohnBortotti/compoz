@@ -1,8 +1,10 @@
-import { Heading, Flex, Tag, Box, Badge } from "@chakra-ui/react";
+import { Heading, Flex, Tag, Box, Badge, Button } from "@chakra-ui/react";
 import ContainerStatusBadge from "./containerStatusBadge";
-import { MaybeContainer } from "~/types/containerTypes";
+import { MaybeContainer, setDetailsInterface } from "~/types/containerTypes";
 
-export default function ContainerDetails({container}: MaybeContainer) {
+export default function ContainerDetails(
+    { container, setDetails }: MaybeContainer & setDetailsInterface
+) {
     if (container && container.name) {
         return (
             <Box>
@@ -10,10 +12,16 @@ export default function ContainerDetails({container}: MaybeContainer) {
                     <Heading size="md" mx={4}>
                         {container.name}
                     </Heading>
-                    <Tag>{container.stack}</Tag>
+                    <Tag
+                        onClick={() => {
+                            // setDetails({ type: "stack", item: container.stack });
+                        }}
+                        _hover={{ bg: "gray.200", cursor: "pointer" }}>
+                        {container.stack}
+                    </Tag>
                 </Flex>
                 <Flex mt={3} mx={4}>
-                    <ContainerStatusBadge status={container.status} fontSize="md" />
+                    <ContainerStatusBadge state={container.state} fontSize="md" />
                 </Flex>
             </Box>
         );

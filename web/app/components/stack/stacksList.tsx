@@ -2,6 +2,7 @@ import { List, ListItem, Button } from "@chakra-ui/react";
 import StackCard from "./stackCard";
 import ContainerSearchBar from "../container/containerSearchBar";
 import { useState } from "react";
+import { setDetailsInterface } from "~/types/containerTypes";
 
 const stacks = [
     { id:"1", name: "nginx", count: 3 },
@@ -10,7 +11,7 @@ const stacks = [
     { id:"4", name: "jenkins", count: 1 },
 ];
 
-export default function StacksList({setSelectedStack}: any) {
+export default function StacksList({setDetails}: setDetailsInterface) {
     const [searchTerm, setSearchTerm] = useState("");
 
     const filteredStacks = stacks.filter((stack) =>
@@ -21,11 +22,17 @@ export default function StacksList({setSelectedStack}: any) {
         <List spacing={2}>
             <ContainerSearchBar
                 placeholder="Search stack"
-                onChange={(event) => setSearchTerm(event.target.value)}
+                // onChange={(event: any) => setSearchTerm(event.target.value)}
             />
             {filteredStacks.map((stack) => (
                 <ListItem key={stack.id}>
-                    <Button w="full" variant="ghost" justifyContent="flex-start" onClick={() => setSelectedStack(stack)} >
+                    <Button
+                        w="full" 
+                        variant="ghost"
+                        justifyContent="flex-start" 
+                        onClick={
+                            () => setDetails({ type: "stack", item: stack })
+                        }> 
                         <StackCard id={stack.id} name={stack.name} count={stack.count} />
                     </Button>
                 </ListItem>

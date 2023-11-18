@@ -2,25 +2,47 @@ import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "CompoZ" }
   ];
 };
 
-import { ChakraProvider, Grid, GridItem, Box, Tag, Flex, Heading, Avatar, Menu, MenuButton, MenuList, MenuItem, Button, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { ChakraProvider, Grid, GridItem, Box, Flex, Heading, Avatar, Menu, MenuButton, MenuList, MenuItem, Button, Tabs, TabList, TabPanels, Tab, TabPanel, StackProps } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import ContainerDetails from "~/components/container/containerDetails";
 import ContainersList from "~/components/container/containersList";
 import StacksList from "~/components/stack/stacksList";
 import { useState } from "react";
-import { MaybeContainer, MaybeStack, ShowingType } from "~/types/containerTypes";
+import { ContainerCardType, ContainerOrStack, MaybeContainer, MaybeStack, ShowingDetailsType, StackCardType } from "~/types/containerTypes";
 import StackDetails from "~/components/stack/stackDetails";
 
 export default function Index() {
-  
-  const [showType, setShowType] = useState<ShowingType>("containers");
-  const [selectedContainer, setSelectedContainer] = useState<MaybeContainer>({container: null});
-  const [selectedStack, setSelectedStack] = useState<MaybeStack>({stack: null});
+  const [tabIndex, setTabIndex] = useState(0);
+  const [showType, setShowType] = useState<ShowingDetailsType>("containers");
+  const [selectedContainer, setSelectedContainer] = useState<MaybeContainer>({ container: null });
+  const [selectedStack, setSelectedStack] = useState<MaybeStack>({ stack: null });
+
+  const handleTabsChange = (index: number) => {
+    setTabIndex(index)
+  }
+
+  const setDetails = (item: ContainerOrStack) => {
+    switch (item.type) {
+      case "container":
+        setShowType("containers");
+        setSelectedContainer({ container: item.item as ContainerCardType });
+        console.log(showType);
+        console.log(selectedContainer);
+        break;
+      case "stack":
+        setShowType("stacks");
+        setSelectedStack({ stack: item.item as StackCardType });
+        console.log(showType);
+        console.log(selectedStack);
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <ChakraProvider>
@@ -36,7 +58,7 @@ export default function Index() {
                 <Avatar size="sm" name="JB" src="" />
               </MenuButton>
               <MenuList>
-                <MenuItem color="black">Settigs</MenuItem>
+                <MenuItem color="black">Settings</MenuItem>
                 <MenuItem color="black">Log out</MenuItem>
               </MenuList>
             </Menu>
@@ -50,26 +72,29 @@ export default function Index() {
               h='full'
               p={3}
               borderRadius="md">
-              <Tabs>
+              <Tabs index={tabIndex} onChange={handleTabsChange}>
                 <TabList>
-                  <Tab onClick={() => setShowType("containers")}>Containers</Tab>
                   <Tab onClick={() => setShowType("stacks")}>Stacks</Tab>
+                  <Tab onClick={() => setShowType("containers")}>Containers</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <ContainersList setSelectedContainer={setSelectedContainer}/>
+                    <StacksList setDetails={setDetails} />
                   </TabPanel>
                   <TabPanel>
-                    <StacksList setSelectedStack={setSelectedStack} />
+                    <ContainersList setDetails={setDetails} />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </GridItem>
             <GridItem colStart={2} colEnd={6} p={3} h='full' bg='white' w='full' borderRadius="md">
               {showType === "containers" ? (
-                <ContainerDetails container={selectedContainer} />
+                <ContainerDetails
+                  container={selectedContainer.container}
+                  setDetails={setDetails}
+                />
               ) : (
-                <StackDetails stack={selectedStack} />
+                <StackDetails stack={selectedStack.stack} />
               )}
             </GridItem>
           </Grid>
