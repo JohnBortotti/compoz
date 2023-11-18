@@ -1,8 +1,8 @@
 import { List, ListItem, Button } from "@chakra-ui/react";
 import StackCard from "./stackCard";
-import ContainerSearchBar from "../container/containerSearchBar";
 import { useState } from "react";
 import { setDetailsInterface } from "~/types/containerTypes";
+import SearchBar from "../container/searchBar";
 
 const stacks = [
     { id:"1", name: "nginx", count: 3 },
@@ -20,9 +20,9 @@ export default function StacksList({setDetails}: setDetailsInterface) {
 
     return (
         <List spacing={2}>
-            <ContainerSearchBar
+            <SearchBar
                 placeholder="Search stack"
-                // onChange={(event: any) => setSearchTerm(event.target.value)}
+                setSearchTerm={setSearchTerm}
             />
             {filteredStacks.map((stack) => (
                 <ListItem key={stack.id}>

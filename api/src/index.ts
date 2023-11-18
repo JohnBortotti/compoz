@@ -6,10 +6,10 @@ import volumesRouter from './routes/volumes';
 import cors from 'cors';
 
 const app = express();
-const port = 3030;
+const port = process.env.API_PORT || 3030;
 
 app.use(cors({
-    origin: 'http://192.168.0.105:3000'
+    origin: process.env.CORS_ORIGIN || '*',
 }));
 
 app.use('/api/containers', containersRouter);
