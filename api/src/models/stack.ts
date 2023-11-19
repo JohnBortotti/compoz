@@ -1,6 +1,5 @@
 import fs from 'fs/promises';
-import { Container, toContainer } from './container';
-import { getAxiosInstance } from '../utils/axios';
+import { Container, getContainers } from './container';
 
 type Stack = {
     id: string;
@@ -11,9 +10,7 @@ type Stack = {
 }
 
 async function getContainersForComposeFile(stackName: string): Promise<Container[]> {
-    const containers = 
-        (await getAxiosInstance.get('/containers/json'))
-            .data.map((data: any) => toContainer(data));
+    const containers = await getContainers();
 
     return containers.filter((container: Container) => 
       container.stack == stackName

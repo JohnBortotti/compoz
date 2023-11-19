@@ -12,13 +12,13 @@ export default function ContainerDetails(
                     <Heading size="md" mx={4}>
                         {container.name}
                     </Heading>
-                    <Tag
+                    { container.stack ? <Tag
                         onClick={() => {
                             // setDetails({ type: "stack", item: container.stack });
                         }}
                         _hover={{ bg: "gray.200", cursor: "pointer" }}>
                         {container.stack}
-                    </Tag>
+                    </Tag>: null }
                 </Flex>
                 <Flex mt={3} mx={4}>
                     <ContainerStatusBadge state={container.state} fontSize="md" />
