@@ -3,10 +3,11 @@ export type containerState = "running" | "stopped";
 export type ContainerType = {
     id: string,
     name: string,
+    service: string,
     image: string,
     state: containerState,
     status: string,
-    stack: String,
+    stack: string,
 }
 
 export type StackType = {

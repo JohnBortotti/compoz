@@ -16,6 +16,9 @@ export default function ContainerCard({ container, setDetails }: { container: Co
             <Text fontSize="md" fontWeight="bold" mr={3} mb={1}>
                 {container.name}
             </Text>
+            <Text fontSize="sm" color="gray.500" mr={3} mb={1}>
+                {container.service}
+            </Text>
             <Text fontSize="sm" color="gray.500" mr={3} mb={3}>
                 {container.image}
             </Text>
