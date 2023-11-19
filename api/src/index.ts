@@ -1,8 +1,6 @@
 import express from 'express';
 import containersRouter from './routes/containers';
-import imagesRouter from './routes/images';
-import newtorksRouter from './routes/networks';
-import volumesRouter from './routes/volumes';
+import stacksRouter from './routes/stacks';
 import cors from 'cors';
 
 const app = express();
@@ -13,18 +11,7 @@ app.use(cors({
 }));
 
 app.use('/api/containers', containersRouter);
-app.use('/api/images', imagesRouter);
-app.use('/api/networks', newtorksRouter);
-app.use('/api/volumes', volumesRouter);
-
-// STACKS (docker-compose.yml)
-// list stacks
-// get stack details
-// edit stack
-// run stack
-// stop stack
-// update stack
-// delete stack
+app.use('/api/stacks', stacksRouter);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
