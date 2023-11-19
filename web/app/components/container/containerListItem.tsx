@@ -1,18 +1,18 @@
 import { Text, Box, Tag, Flex } from "@chakra-ui/react";
-import { StackCardType } from "../../types/containerTypes";
+import ContainerStatusBadge from "./containerStatusBadge";
+import { ContainerType } from "../../types/containerTypes";
 
-export default function StackCard({ name, count }: StackCardType) {
-    const text = count > 1 ? "containers" : "container";
-
+export default function containerListItem({ name, state, stack }: ContainerType) {
     return (
       <Box
         borderRadius="lg"
         overflow="hidden"
       >
         <Flex p={3} alignItems="center">
+          <ContainerStatusBadge state={state} />
           <Text fontSize="md" fontWeight="bold" mr={3}>{name}</Text> 
-          <Tag>{count} {text}</Tag>
+          <Tag>{stack}</Tag>
         </Flex>
       </Box>
     );
-}
+  }

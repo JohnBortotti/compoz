@@ -12,3 +12,12 @@ export const getContainers = async () => {
         console.log(error);
     }
 };
+
+export const getStacks = async () => {
+    try {
+        const response = await api.get('/stacks');
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}

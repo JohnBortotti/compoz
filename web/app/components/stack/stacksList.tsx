@@ -1,22 +1,27 @@
 import { List, ListItem, Button } from "@chakra-ui/react";
-import StackCard from "./stackCard";
-import { useState } from "react";
-import { setDetailsInterface } from "~/types/containerTypes";
+import { useEffect, useState } from "react";
+import { StackType, setDetailsInterface } from "~/types/containerTypes";
 import SearchBar from "../container/searchBar";
-
-const stacks = [
-    { id:"1", name: "nginx", count: 3 },
-    { id:"2", name: "grafana", count: 4 },
-    { id:"3", name: "rabbitmq", count: 1 },
-    { id:"4", name: "jenkins", count: 1 },
-];
+import { getStacks } from "~/utils/api";
+import StackListItem from "./stackListItem";
 
 export default function StacksList({setDetails}: setDetailsInterface) {
+    const [stacks, setStacks] = useState<StackType[]>([]);
+    const [filteredStacks, setFilteredStacks] = useState<StackType[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
 
-    const filteredStacks = stacks.filter((stack) =>
-        stack.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    useEffect(() => {
+        const fetchContainers = async () => {
+            const data = await getStacks();
+            setStacks(data);
+        };
+
+        fetchContainers();
+    }, []);
+    
+    // const filteredStacks = stacks.filter((stack) =>
+    //     stack.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
     return (
         <List spacing={2}>
@@ -24,7 +29,7 @@ export default function StacksList({setDetails}: setDetailsInterface) {
                 placeholder="Search stack"
                 setSearchTerm={setSearchTerm}
             />
-            {filteredStacks.map((stack) => (
+            {stacks.map((stack) => (
                 <ListItem key={stack.id}>
                     <Button
                         w="full" 
@@ -33,7 +38,7 @@ export default function StacksList({setDetails}: setDetailsInterface) {
                         onClick={
                             () => setDetails({ type: "stack", item: stack })
                         }> 
-                        <StackCard id={stack.id} name={stack.name} count={stack.count} />
+                        <StackListItem id={stack.id} name={stack.name} count={stack.containers.length} />
                     </Button>
                 </ListItem>
             ))}

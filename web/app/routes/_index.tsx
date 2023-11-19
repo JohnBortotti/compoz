@@ -12,12 +12,12 @@ import ContainerDetails from "~/components/container/containerDetails";
 import ContainersList from "~/components/container/containersList";
 import StacksList from "~/components/stack/stacksList";
 import { useState } from "react";
-import { ContainerCardType, ContainerOrStack, MaybeContainer, MaybeStack, ShowingDetailsType, StackCardType } from "~/types/containerTypes";
+import { ContainerType, ContainerOrStack, MaybeContainer, MaybeStack, ShowingDetailsType, StackType } from "~/types/containerTypes";
 import StackDetails from "~/components/stack/stackDetails";
 
 export default function Index() {
   const [tabIndex, setTabIndex] = useState(0);
-  const [showType, setShowType] = useState<ShowingDetailsType>("containers");
+  const [showType, setShowType] = useState<ShowingDetailsType>("stacks");
   const [selectedContainer, setSelectedContainer] = useState<MaybeContainer>({ container: null });
   const [selectedStack, setSelectedStack] = useState<MaybeStack>({ stack: null });
 
@@ -27,17 +27,15 @@ export default function Index() {
 
   const setDetails = (item: ContainerOrStack) => {
     switch (item.type) {
-      case "container":
-        setShowType("containers");
-        setSelectedContainer({ container: item.item as ContainerCardType });
-        console.log(showType);
-        console.log(selectedContainer);
-        break;
       case "stack":
         setShowType("stacks");
-        setSelectedStack({ stack: item.item as StackCardType });
-        console.log(showType);
-        console.log(selectedStack);
+        setTabIndex(0);
+        setSelectedStack({ stack: item.item as StackType });
+        break;
+      case "container":
+        setShowType("containers");
+        setTabIndex(1);
+        setSelectedContainer({ container: item.item as ContainerType });
         break;
       default:
         break;
@@ -94,7 +92,7 @@ export default function Index() {
                   setDetails={setDetails}
                 />
               ) : (
-                <StackDetails stack={selectedStack.stack} />
+                <StackDetails stack={selectedStack.stack} setDetails={setDetails} />
               )}
             </GridItem>
           </Grid>

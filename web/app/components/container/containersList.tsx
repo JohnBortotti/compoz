@@ -1,14 +1,15 @@
 import { List, ListItem, Button } from "@chakra-ui/react";
-import ContainerCard from "./containerCard";
+import ContainerCard from "./containerListItem";
 import { useEffect, useState } from "react";
-import { ContainerCardType, setDetailsInterface } from "~/types/containerTypes";
+import { ContainerType, setDetailsInterface } from "~/types/containerTypes";
 import { getContainers } from "~/utils/api";
 import SearchBar from "./searchBar";
 
 export default function ContainersList({ setDetails }: setDetailsInterface) {
-    const [ containers, setContainers ] = useState<ContainerCardType[]>([]);
-    const [filteredContainers, setFilteredContainers] = useState<ContainerCardType[]>([]);
+    const [ containers, setContainers ] = useState<ContainerType[]>([]);
+    const [filteredContainers, setFilteredContainers] = useState<ContainerType[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    
     useEffect(() => {
         const fetchContainers = async () => {
             const data = await getContainers();

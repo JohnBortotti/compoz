@@ -1,16 +1,37 @@
-import { Heading, Flex, Tag, Box, Badge } from "@chakra-ui/react";
+import { Heading, Flex, Tag, Box, Divider, Grid, GridItem, Text } from "@chakra-ui/react";
 import { MaybeStack } from "~/types/containerTypes";
+import ComposeEditor from "./composeEditor";
+import ContainerCard from "../container/containerCard";
 
-export default function StackDetails({ stack }: MaybeStack) {
+export default function StackDetails({ stack, setDetails }: MaybeStack & { setDetails: any }) {
     if (stack && stack.name) {
         return (
             <Box>
-                <Flex mt={3}>
-                    <Heading size="md" mx={4}>
+                <Flex my={3}>
+                    <Text fontSize="2xl" fontWeight="bold" mx={4}>
                         {stack.name}
-                    </Heading>
-                    <Tag>{stack.count} {stack.count > 1 ? "containers" : "container" }</Tag>
+                    </Text>
+                    <Tag>{stack.containers.length} {stack.containers.length > 1 ? "containers" : "container"}</Tag>
                 </Flex>
+                <Divider></Divider>
+                <Grid templateColumns="repeat(2, 1fr)" gap={2} w="full" h="full">
+                    <GridItem colSpan={1} bg="white" w="full" h="full" p={3}>
+                        <Box mx={4} mt={4}>
+                            <Text fontSize="xl" fontWeight="bold" mb={4}>Compose</Text>
+                            <ComposeEditor value={stack.content} />
+                        </Box>
+                    </GridItem>
+                    <GridItem colSpan={1} bg="white" w="full" h="full" p={3}>
+                        <Box mx={4} mt={4}>
+                            <Text fontSize="xl" fontWeight="bold" mb={4}>Containers</Text>
+                            {stack.containers.map((container) =>
+                                <ContainerCard container={container} setDetails={setDetails} />
+                            )}
+                        </Box>
+                    </GridItem>
+                </Grid>
+
+
             </Box>
         );
     } else {
