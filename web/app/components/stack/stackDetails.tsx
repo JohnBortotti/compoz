@@ -24,9 +24,14 @@ export default function StackDetails({ stack, setDetails }: MaybeStack & { setDe
                     <GridItem colSpan={1} bg="white" w="full" h="full" p={3}>
                         <Box mx={4} mt={4}>
                             <Text fontSize="xl" fontWeight="bold" mb={4}>Containers</Text>
-                            {stack.containers.map((container) =>
-                                <ContainerCard container={container} setDetails={setDetails} />
-                            )}
+                            {
+                            stack.containers.length === 0 ?
+                                <Text color="gray.400" fontWeight="500">No running containers in this stack</Text>
+                                : 
+                                stack.containers.map((container) =>
+                                    <ContainerCard key={container.id} container={container} setDetails={setDetails} />
+                                )
+                            }
                         </Box>
                     </GridItem>
                 </Grid>
@@ -38,7 +43,7 @@ export default function StackDetails({ stack, setDetails }: MaybeStack & { setDe
         return (
             <Box>
                 <Flex mt={3}>
-                    <Heading size="md" mx={4} color="gray.300">
+                    <Heading size="md" mx={4} color="gray.300" fontWeight="400">
                         No stack selected
                     </Heading>
                 </Flex>

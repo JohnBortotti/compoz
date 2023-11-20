@@ -21,3 +21,12 @@ export const getStacks = async () => {
         console.log(error);
     }
 }
+
+export const getStack = async (stackName: string) => {
+    try {
+        const response = await api.get(`/stacks/${stackName}`);
+        return response.data;
+    } catch (error) {
+        return null
+    }
+}

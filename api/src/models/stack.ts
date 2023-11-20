@@ -30,11 +30,21 @@ export async function listStacks(): Promise<Stack[]> {
         const content = await fs.readFile(path, 'utf8');
         const stack_name = stack.replace('.yml', ''); 
         return {
-            id: "1",
+            id: stack_name,
             name: stack_name,
             path: path,
             content,
             containers: await getContainersForComposeFile(stack_name)
         };
     }));
+}
+
+export async function getStack(stackName: string): Promise<Stack | null> {
+    const stacks = await listStacks();
+    const stack = stacks.find((stack) => stack.name == stackName);
+    if (!stack) {
+        return null;
+    }
+    
+    return stack;
 }
