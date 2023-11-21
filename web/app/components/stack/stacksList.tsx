@@ -19,9 +19,13 @@ export default function StacksList({setDetails}: setDetailsInterface) {
         fetchContainers();
     }, []);
     
-    // const filteredStacks = stacks.filter((stack) =>
-    //     stack.name.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
+    useEffect(() => {
+        setFilteredStacks(
+            stacks.filter(stack =>
+                stack.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        );
+    }, [stacks, searchTerm]);
 
     return (
         <List spacing={2}>
@@ -29,7 +33,7 @@ export default function StacksList({setDetails}: setDetailsInterface) {
                 placeholder="Search stack"
                 setSearchTerm={setSearchTerm}
             />
-            {stacks.map((stack) => (
+            {filteredStacks.map((stack) => (
                 <ListItem key={stack.id}>
                     <Button
                         w="full" 
@@ -38,7 +42,7 @@ export default function StacksList({setDetails}: setDetailsInterface) {
                         onClick={
                             () => setDetails({ type: "stack", item: stack })
                         }> 
-                        <StackListItem id={stack.id} name={stack.name} count={stack.containers.length} />
+                        <StackListItem name={stack.name} count={stack.containers.length} />
                     </Button>
                 </ListItem>
             ))}
