@@ -1,7 +1,6 @@
 import { Text, Box, Tag, Flex } from "@chakra-ui/react";
-import { StackType } from "../../types/containerTypes";
 
-export default function StackListItem({ name, count }: StackType & { count: number }) {
+export default function StackListItem({ name, count }: { name: string, count: number }) {
     const text = count == 1 ? "container" : "containers";
 
     return (

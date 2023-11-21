@@ -30,3 +30,19 @@ export const getStack = async (stackName: string) => {
         return null
     }
 }
+
+export const updateStack = async (stackName: string, stackContent: string) => {
+    try {
+        const response = await api.put(`/stacks/${stackName}`,
+            { content: stackContent },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+        return response.data;
+    } catch (error) {
+        return null
+    }
+}
