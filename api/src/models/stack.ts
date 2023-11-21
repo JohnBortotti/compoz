@@ -48,3 +48,13 @@ export async function getStack(stackName: string): Promise<Stack | null> {
     
     return stack;
 }
+
+export async function updateStack(stackName: string, stackContent: string): Promise<Stack | null> {
+    const stack = await getStack(stackName);
+    if (!stack) {
+        return null;
+    }
+
+    await fs.writeFile(stack.path, stackContent);
+    return await getStack(stackName);
+}

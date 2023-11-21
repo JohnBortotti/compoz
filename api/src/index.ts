@@ -9,6 +9,7 @@ const port = process.env.API_PORT || 3030;
 app.use(cors({
     origin: process.env.CORS_ORIGIN || '*',
 }));
+app.use(express.json());
 
 app.use('/api/containers', containersRouter);
 app.use('/api/stacks', stacksRouter);
