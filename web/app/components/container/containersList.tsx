@@ -1,5 +1,5 @@
 import { List, ListItem, Button } from "@chakra-ui/react";
-import ContainerCard from "./containerListItem";
+import ContainerListItem from "./containerListItem";
 import { useEffect, useState } from "react";
 import { ContainerType, setDetailsInterface } from "~/types/containerTypes";
 import { getContainers } from "~/utils/api";
@@ -41,8 +41,7 @@ export default function ContainersList({ setDetails }: setDetailsInterface) {
                         onClick={
                             () => setDetails({ type: "container", item: container })
                         }>
-                        <ContainerCard
-                            id={container.id}
+                        <ContainerListItem
                             name={container.name}
                             state={container.state}
                             stack={container.stack}

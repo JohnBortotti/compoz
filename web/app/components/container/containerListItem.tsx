@@ -1,8 +1,9 @@
 import { Text, Box, Tag, Flex } from "@chakra-ui/react";
 import ContainerStatusBadge from "./containerStatusBadge";
-import { ContainerType } from "../../types/containerTypes";
+import { containerState } from "../../types/containerTypes";
 
-export default function containerListItem({ name, state, stack }: ContainerType) {
+
+export default function ContainerListItem({ name, state, stack }: { name: string, state: containerState, stack: string }) {
   return (
     <Box borderRadius="lg" overflow="hidden">
       <Flex p={3} alignItems="center">
